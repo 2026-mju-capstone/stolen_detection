@@ -52,7 +52,7 @@ class TheftDetector:
             ibox = item['bbox']
             
             if tid not in self.tracked_items:
-                # [수정] 물건이 처음 등장한 시점에만 소유자 판별
+                # Determine owner only when the item first appears
                 owner_id = None
                 min_dist = float('inf')
                 for p in persons:
@@ -66,7 +66,7 @@ class TheftDetector:
                     self.owners[tid] = owner_id
                     print(f"[INFO]     Owner of ID {tid} assigned to Person {owner_id}")
                 else:
-                    self.owners[tid] = None # 처음 나타날 때 사람이 없으면 무소유 상태
+                    self.owners[tid] = None # No owner if no person nearby at first appearance
                     print(f"[INFO]     ID {tid} appeared with NO owner.")
 
                 self.tracked_items[tid] = {

@@ -8,7 +8,7 @@ env/
 
 # Project Specific
 output/
-yolo11s.pt
+*.pt
 video/
 *.mov
 *.mp4
@@ -17,3 +17,6 @@ video/
 
 # OS
 .DS_Store
+
+# AI Agents
+.agents/

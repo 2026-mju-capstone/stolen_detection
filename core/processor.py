@@ -1,4 +1,5 @@
 import cv2
+import time
 import platform
 import config
 from core.detector import TheftDetector
@@ -7,6 +8,8 @@ class VideoProcessor:
     def __init__(self, yolo_model):
         self.model = yolo_model
         self.detector = TheftDetector(stationary_threshold_frames=50, proximity_pixels=100)
+        self.frame_count = 0
+        self.start_time = None
         self._setup_target_classes()
 
     def _setup_target_classes(self):
@@ -29,6 +32,10 @@ class VideoProcessor:
             if not ret:
                 break
                 
+            self.frame_count += 1
+            if self.start_time is None:
+                self.start_time = time.time()
+                
             results = self.model.track(frame, persist=True, verbose=False, classes=self.target_indices, conf=0.5)
             is_theft = self.detector.update(results[0], frame, config.VALID_LOST_ITEMS)
             
@@ -41,11 +48,32 @@ class VideoProcessor:
                 print("[INFO]     Theft detected. Stopping video processing.")
                 break
 
-            annotated_frame = results[0].plot()
-            cv2.imshow("Theft Detection System", annotated_frame)
-            
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+            # Render and show the UI only if SHOW_UI is True
+            if config.SHOW_UI:
+                annotated_frame = results[0].plot()
+                
+                elapsed_time = time.time() - self.start_time
+                avg_fps = self.frame_count / elapsed_time if elapsed_time > 0 else 0
+                total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+                
+                # UI Overlay - Frame Info
+                overlay = annotated_frame.copy()
+                cv2.rectangle(overlay, (10, 10), (280, 80), (0, 0, 0), -1)
+                cv2.addWeighted(overlay, 0.4, annotated_frame, 0.6, 0, annotated_frame)
+                
+                cv2.putText(annotated_frame, f"Frame: {self.frame_count} / {total_frames}", 
+                            (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+                cv2.putText(annotated_frame, f"Avg FPS: {avg_fps:.2f}", 
+                            (20, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+                cv2.imshow("Theft Detection System", annotated_frame)
+                
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+            else:
+                # Skip UI wait and just process frames when in headless mode
+                if self.frame_count % 100 == 0:  # Print progress every 100 frames
+                    print(f"[INFO]     Processing... (Frame: {self.frame_count})")
                 
         cap.release()
         cv2.destroyAllWindows()

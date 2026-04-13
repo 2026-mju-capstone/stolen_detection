@@ -2,17 +2,17 @@
 
 MODEL_ID = "openai/clip-vit-base-patch32"
 YOLO_MODEL_PATH = "yolo11s.pt"
-VIDEO_PATH = "video/testst.mp4"
-
+VIDEO_PATH = "video/test.mp4"
+SHOW_UI = False  # Toggle UI display (Set to False for maximum performance)
 # YOLO tracking targets
 VALID_LOST_ITEMS = {
     'backpack', 'umbrella', 'handbag', 
-    'bottle', 'cup', 'cell phone', 'book', 'laptop'
+    'bottle', 'cup', 'cell phone', 'book'
 }
 
 # CLIP analysis categories
 ANALYSIS_CATEGORIES = [
-    "smartphone", "laptop", "earphones", "bag", "wallet", 
+    "smartphone", "earphones", "bag", "wallet", 
     "credit card", "student ID card", "textbook", "notebook", 
     "umbrella", "glasses"
 ]

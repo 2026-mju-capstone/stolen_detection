@@ -22,6 +22,9 @@
     - **Category & Color**: CLIP이 판별한 물건의 종류 및 주요 색상
     - **Feature Vector**: 512차원의 이미지 특징 추출값 (Similarity Search용)
 3.  **실시간 모니터링 로그**: 도난 탐지 시점, 객체 ID, 발생 시간 등의 콘솔 기록
+4.  **실시간 텔레메트리 (UI 활성 시)**: 
+    - `Frame`: 현재 프레임 / 전체 프레임 (진행도 표시)
+    - `Avg FPS`: 전체 소요 시간 대비 평균 처리 속도
 
 ## 2. 시스템 작동 프로세스 (System Pipeline)
 
@@ -68,7 +71,7 @@
 ## 4. 프로젝트 구조 및 모듈
 
 - `main.py`: 프로그램 진입점 및 전체 시나리오 제어
-- `config.py`: 모델 경로 및 전역 설정 관리
+- `config.py`: 모델 경로 및 전역 설정 관리 (`SHOW_UI` 스위치 포함)
 - **core/**: 도난 탐지 알고리즘(`detector.py`) 및 영상 처리 서비스(`processor.py`)
 - **models/**: 모델 로더(`loader.py`) 및 CLIP 분석기(`analyzer.py`)
 - **output/**: 도난 스냅샷 저장 디렉토리
