@@ -58,7 +58,7 @@
 | 구분 | 태그 목록 (Labels) |
 | :--- | :--- |
 | **카테고리** | `smartphone`, `laptop`, `earphones`, `bag`, `wallet`, `credit card`, `student ID card`, `textbook`, `notebook`, `umbrella`, `glasses` |
-| **색상** | `black`, `white`, `gray`, `red`, `blue`, `green`, `yellow`, `brown`, `pink`, `purple`, `orange`, `beige`, `transparent` |
+| **색상** | `black`, `white`, `gray`, `red`, `blue`, `green`, `yellow`, `brown`, `pink`, `purple`, `orange`, `beige` |
 
 ## 4. 프로젝트 구조 및 모듈
 
