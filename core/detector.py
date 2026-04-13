@@ -113,4 +113,9 @@ class TheftDetector:
             print(f"[SAVE]     Baseline image saved: {baseline_file}")
 
         print(f"[ALERT]    Theft suspected! Object ID: {track_id}")
-        self.alerts.append({'id': track_id, 'time': timestamp, 'file': baseline_file})
+        self.alerts.append({
+            'id': track_id, 
+            'time': timestamp, 
+            'baseline_file': baseline_file,
+            'moment_file': moment_file
+        })

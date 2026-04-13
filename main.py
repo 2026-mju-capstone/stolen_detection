@@ -13,18 +13,30 @@ def main():
 
     # 3. Step 1: Process Video to find theft
     print(f"\n[STEP 1]   Starting video monitoring: {config.VIDEO_PATH}")
-    theft_img = video_proc.process(config.VIDEO_PATH)
+    snapshots = video_proc.process(config.VIDEO_PATH)
 
-    # 4. Step 2: If theft detected, analyze the item
-    if theft_img:
-        print(f"\n[STEP 2]   Theft alert triggered.")
-        print(f"[RESULT]   Baseline image saved at: {theft_img}")
+    # 4. Step 2: If theft detected, analyze and show images
+    if snapshots:
+        baseline_img = snapshots['baseline']
+        moment_img = snapshots['moment']
         
-        # Detailed Analysis
-        analyzer.analyze_stolen_item(theft_img)
+        print(f"\n[STEP 2]   Theft alert triggered.")
+        print(f"[RESULT]   Baseline image: {baseline_img}")
+        print(f"[RESULT]   Moment image:   {moment_img}")
+        
+        # Show both images
+        from PIL import Image
+        try:
+            Image.open(moment_img).show(title="THEFT MOMENT")
+            Image.open(baseline_img).show(title="STOLEN ITEM (BEFORE)")
+        except:
+            pass
+
+        # Detailed Analysis using baseline
+        analyzer.analyze_stolen_item(baseline_img)
         
         # Feature Vector Extraction
-        vector = analyzer.extract_vector(theft_img)
+        vector = analyzer.extract_vector(baseline_img)
         if vector:
             print(f"\n[STEP 3]   Vector extraction completed. Dim: {len(vector)}")
             print(f"[RESULT]   Vector sample: {vector[:5]}...")

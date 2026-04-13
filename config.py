@@ -20,5 +20,5 @@ ANALYSIS_CATEGORIES = [
 # CLIP color prompts
 ANALYSIS_COLORS = [
     "black", "white", "gray", "red", "blue", "green", 
-    "yellow", "brown", "pink", "purple", "orange", "beige", "transparent"
+    "yellow", "brown", "pink", "purple", "orange", "beige"
 ]

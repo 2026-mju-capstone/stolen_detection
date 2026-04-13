@@ -33,7 +33,10 @@ class VideoProcessor:
             
             if is_theft:
                 last_alert = self.detector.alerts[-1]
-                theft_snapshot = last_alert['file']
+                theft_snapshots = {
+                    'baseline': last_alert['baseline_file'],
+                    'moment': last_alert['moment_file']
+                }
                 print("[INFO]     Theft detected. Stopping video processing.")
                 break
 
@@ -47,4 +50,4 @@ class VideoProcessor:
         cv2.destroyAllWindows()
         if platform.system() == 'Darwin': cv2.waitKey(1)
         
-        return theft_snapshot
+        return theft_snapshots if theft_snapshots else None
