@@ -2,6 +2,7 @@ import config
 from models.loader import load_models
 from models.analyzer import ImageAnalyzer
 from core.processor import VideoProcessor
+from PIL import Image
 
 def main():
     # 1. Load Models through models/loader.py
@@ -25,7 +26,6 @@ def main():
         print(f"[RESULT]   Moment image:   {moment_img}")
         
         # Show both images
-        from PIL import Image
         try:
             Image.open(moment_img).show(title="THEFT MOMENT")
             Image.open(baseline_img).show(title="STOLEN ITEM (BEFORE)")
