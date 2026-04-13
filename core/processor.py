@@ -16,6 +16,7 @@ class VideoProcessor:
                 self.target_indices.append(idx)
 
     def process(self, video_path):
+        theft_snapshots = None
         cap = cv2.VideoCapture(video_path)
         if not cap.isOpened():
             print(f"[ERROR]    Could not open video file: {video_path}")
