@@ -52,6 +52,23 @@ class TheftDetector:
             ibox = item['bbox']
             
             if tid not in self.tracked_items:
+                # [수정] 물건이 처음 등장한 시점에만 소유자 판별
+                owner_id = None
+                min_dist = float('inf')
+                for p in persons:
+                    dist = self.calculate_distance(center, p['center'])
+                    if self.is_touching(ibox, p['bbox']) or dist < self.proximity_pixels:
+                        if dist < min_dist:
+                            min_dist = dist
+                            owner_id = p['id']
+                
+                if owner_id is not None:
+                    self.owners[tid] = owner_id
+                    print(f"[INFO]     Owner of ID {tid} assigned to Person {owner_id}")
+                else:
+                    self.owners[tid] = None # 처음 나타날 때 사람이 없으면 무소유 상태
+                    print(f"[INFO]     ID {tid} appeared with NO owner.")
+
                 self.tracked_items[tid] = {
                     'last_pos': center, 'stay_count': 0, 
                     'is_stationary': False, 'class_name': item['class_name'],
@@ -88,11 +105,6 @@ class TheftDetector:
                         closest_person_id = p['id']
             
             if closest_person_id is not None:
-                # 첫 감지 시 소유자 등록
-                if tid not in self.owners:
-                    self.owners[tid] = closest_person_id
-                    print(f"[INFO]     Owner of ID {tid} assigned to Person {closest_person_id}")
-                
                 self.tracked_items[tid]['near_history'] = 120
                 self.tracked_items[tid]['last_person_id'] = closest_person_id
             else:
