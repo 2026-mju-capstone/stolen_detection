@@ -8,6 +8,9 @@ class TheftDetector:
         self.stationary_threshold = stationary_threshold_frames
         self.proximity_pixels = proximity_pixels
         self.missing_threshold = missing_threshold_frames
+        self.stationary_objects = {}  # {track_id: {'pos': (x,y), 'frames': N, 'last_seen_frame': F}}
+        self.owners = {}              # {track_id: owner_person_id}
+        self.near_history = {}        # {track_id: [person_id, ...]}
         self.tracked_items = {}
         self.alerts = []
         self.output_dir = output_dir
@@ -52,7 +55,8 @@ class TheftDetector:
                 self.tracked_items[tid] = {
                     'last_pos': center, 'stay_count': 0, 
                     'is_stationary': False, 'class_name': item['class_name'],
-                    'near_history': 0, 'missing_count': 0
+                    'near_history': 0, 'missing_count': 0,
+                    'last_person_id': None
                 }
             
             self.tracked_items[tid]['missing_count'] = 0
@@ -74,14 +78,23 @@ class TheftDetector:
             
             self.tracked_items[tid]['last_pos'] = center
 
-            is_person_touching = False
+            closest_person_id = None
+            min_dist = float('inf')
             for p in persons:
-                if self.is_touching(ibox, p['bbox']) or self.calculate_distance(center, p['center']) < self.proximity_pixels:
-                    is_person_touching = True
-                    break
+                dist = self.calculate_distance(center, p['center'])
+                if self.is_touching(ibox, p['bbox']) or dist < self.proximity_pixels:
+                    if dist < min_dist:
+                        min_dist = dist
+                        closest_person_id = p['id']
             
-            if is_person_touching:
+            if closest_person_id is not None:
+                # 첫 감지 시 소유자 등록
+                if tid not in self.owners:
+                    self.owners[tid] = closest_person_id
+                    print(f"[INFO]     Owner of ID {tid} assigned to Person {closest_person_id}")
+                
                 self.tracked_items[tid]['near_history'] = 120
+                self.tracked_items[tid]['last_person_id'] = closest_person_id
             else:
                 self.tracked_items[tid]['near_history'] = max(0, self.tracked_items[tid]['near_history'] - 1)
 
@@ -96,8 +109,15 @@ class TheftDetector:
                     item_info = self.tracked_items[tid]
                     if item_info['is_stationary']:
                         if item_info['near_history'] > 0:
-                            self.trigger_alert(tid, frame)
-                            detected_theft = True
+                            last_p = item_info.get('last_person_id')
+                            owner_p = self.owners.get(tid)
+                            
+                            # 소유자가 아닌 사람이 가져갔을 때만 알람
+                            if last_p is not None and last_p != owner_p:
+                                self.trigger_alert(tid, frame)
+                                detected_theft = True
+                            else:
+                                print(f"[INFO]     ID {tid} was retrieved by its owner (Person {owner_p}).")
                     del self.tracked_items[tid]
         return detected_theft
 
