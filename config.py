@@ -2,7 +2,7 @@
 
 MODEL_ID = "openai/clip-vit-base-patch32"
 YOLO_MODEL_PATH = "yolo11s.pt"
-VIDEO_PATH = "video/test.mov"
+VIDEO_PATH = "video/2026-04-13 17-41-00.mp4"
 
 # YOLO tracking targets
 VALID_LOST_ITEMS = {
