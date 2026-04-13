@@ -1,0 +1,7 @@
+opencv-python
+torch
+torchvision
+transformers
+Pillow
+requests
+ultralytics
