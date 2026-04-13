@@ -34,10 +34,6 @@ class ImageAnalyzer:
         best_color, prob_color = self.get_best_match(outputs_color, color_prompts)
         print(f"[ANALYSIS] Color    : {best_color.split()[0]} ({prob_color*100:.1f}%)")
 
-        try:
-            image.show()
-        except:
-            pass
         return best_item, best_color
 
     def extract_vector(self, image_path):
