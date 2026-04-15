@@ -22,3 +22,12 @@ ANALYSIS_COLORS = [
     "black", "white", "gray", "red", "blue", "green", 
     "yellow", "brown", "pink", "purple", "orange", "beige"
 ]
+
+# --- Improved Theft Detection Settings ---
+THEFT_CONFIDENCE_THRESHOLD = 0.7  # Confidence threshold to trigger alert
+VERIFICATION_FRAMES = 30          # Consecutive frames an object must be missing before alert
+CONTACT_WEIGHT = 0.3              # Weight: Intensity of non-owner contact
+OWNER_CLARITY_WEIGHT = 0.5        # Weight: Clarity of initial owner assignment (0.0 if no owner)
+STATIONARY_WEIGHT = 0.2           # Weight: Certainty of stationary state
+FLEEING_DETECTION = True          # Enable/disable fleeing behavior analysis
+FLEEING_SPEED_THRESHOLD = 15.0     # Pixels per frame to be considered fleeing
