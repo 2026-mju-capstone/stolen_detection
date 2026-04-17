@@ -66,13 +66,13 @@
 *   **기본 탐지**: `person` (인물 - 도난 주체 확인용)
 *   **추적 소지품 (VALID_LOST_ITEMS)**: 
     - `backpack` (배낭), `umbrella` (우산), `handbag` (핸드백), `bottle` (병)
-    - `cup` (컵), `cell phone` (핸드폰), `book` (책), `laptop` (노트북)
+    - `cup` (컵), `cell phone` (핸드폰), `book` (책)
 
 ### CLIP 정밀 분석 태그
 
 | 구분 | 태그 목록 (Labels) |
 | :--- | :--- |
-| **카테고리** | `smartphone`, `laptop`, `earphones`, `bag`, `wallet`, `credit card`, `student ID card`, `textbook`, `notebook`, `umbrella`, `glasses` |
+| **카테고리** | `smartphone`, `earphones`, `bag`, `wallet`, `credit card`, `student ID card`, `textbook`, `notebook`, `umbrella`, `water bottle`, `pencil case`, `plush toy` |
 | **색상** | `black`, `white`, `gray`, `red`, `blue`, `green`, `yellow`, `brown`, `pink`, `purple`, `orange`, `beige` |
 
 ## 4. 프로젝트 구조 및 모듈
