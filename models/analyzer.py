@@ -19,14 +19,14 @@ class ImageAnalyzer:
 
         image = Image.open(img_path).convert("RGB")
         
-        # Category Analysis
+        # 카테고리 분석
         inputs = self.processor(text=config.ANALYSIS_CATEGORIES, images=image, return_tensors="pt", padding=True)
         with torch.no_grad():
             outputs = self.model(**inputs)
         best_item, prob_item = self.get_best_match(outputs, config.ANALYSIS_CATEGORIES)
         print(f"\n[ANALYSIS] Category : {best_item} ({prob_item*100:.1f}%)")
 
-        # Color Analysis
+        # 색상 분석
         color_prompts = [f"{c} {best_item}" for c in config.ANALYSIS_COLORS]
         inputs_color = self.processor(text=color_prompts, images=image, return_tensors="pt", padding=True)
         with torch.no_grad():

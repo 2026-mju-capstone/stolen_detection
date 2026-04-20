@@ -8,15 +8,19 @@ env/
 
 # Project Specific
 output/
+scratch/
 *.pt
 video/
 *.mov
 *.mp4
 *.jpg
 *.png
+*.json
 
 # OS
 .DS_Store
 
 # AI Agents
 .agents/
+개선사항.md
+.gitignore

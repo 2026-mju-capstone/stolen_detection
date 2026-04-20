@@ -13,7 +13,7 @@ class VideoProcessor:
         self._setup_target_classes()
 
     def _setup_target_classes(self):
-        self.target_indices = [0] # person
+        self.target_indices = [0] # 사람 (person)
         for idx, name in self.model.names.items():
             if name in config.VALID_LOST_ITEMS:
                 self.target_indices.append(idx)
@@ -48,7 +48,7 @@ class VideoProcessor:
                 print("[INFO]     Theft detected. Stopping video processing.")
                 break
 
-            # Render and show the UI only if SHOW_UI is True
+            # SHOW_UI가 True인 경우에만 UI를 렌더링하고 표시
             if config.SHOW_UI:
                 annotated_frame = results[0].plot()
                 
@@ -56,7 +56,7 @@ class VideoProcessor:
                 avg_fps = self.frame_count / elapsed_time if elapsed_time > 0 else 0
                 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
                 
-                # UI Overlay - Frame Info
+                # UI 오버레이 - 프레임 정보
                 overlay = annotated_frame.copy()
                 cv2.rectangle(overlay, (10, 10), (280, 80), (0, 0, 0), -1)
                 cv2.addWeighted(overlay, 0.4, annotated_frame, 0.6, 0, annotated_frame)
@@ -71,8 +71,8 @@ class VideoProcessor:
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
             else:
-                # Skip UI wait and just process frames when in headless mode
-                if self.frame_count % 100 == 0:  # Print progress every 100 frames
+                # 헤드리스 모드일 때 UI 대기를 건너뛰고 프레임만 처리
+                if self.frame_count % 100 == 0:  # 100프레임마다 진행 상황 출력
                     print(f"[INFO]     Processing... (Frame: {self.frame_count})")
                 
         cap.release()
