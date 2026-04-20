@@ -15,7 +15,7 @@ class TheftLogger:
             os.makedirs(output_dir)
 
     def _load_existing(self):
-        """Load existing logs if the file exists."""
+        """파일이 존재할 경우 기존 로그를 로드함."""
         if os.path.exists(self.log_file):
             try:
                 with open(self.log_file, 'r', encoding='utf-8') as f:
@@ -25,9 +25,9 @@ class TheftLogger:
 
     def log_event(self, event_type, data):
         """
-        Log a theft event.
-        event_type: 'suspected', 'confirmed', etc.
-        data: Dict containing event details
+        도난 이벤트를 기록함.
+        event_type: 'suspected', 'confirmed' 등
+        data: 이벤트 상세 내용을 포함하는 딕셔너리
         """
         entry = {
             'timestamp': datetime.now().isoformat(),
@@ -39,7 +39,7 @@ class TheftLogger:
         print(f"[LOGGER]   Event recorded: {event_type}")
 
     def _save(self):
-        """Save history to JSON file."""
+        """이력을 JSON 파일로 저장함."""
         try:
             with open(self.log_file, 'w', encoding='utf-8') as f:
                 json.dump(self.events, f, indent=2, ensure_ascii=False)
